@@ -48,8 +48,10 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ CredLayer backend running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`✅ CredLayer backend running on http://localhost:${PORT}`);
+  });
+}
 
 export default app;
