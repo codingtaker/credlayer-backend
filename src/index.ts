@@ -6,7 +6,6 @@ import reputationRoutes from './routes/reputation';
 import analyticsRoutes from './routes/analytics';
 import leaderboardRoutes from './routes/leaderboard';
 import historyRoutes from './routes/history';
-
 import { swaggerSpec } from './docs/swagger';
 
 dotenv.config();
@@ -42,6 +41,8 @@ app.get('/health', (req, res) => {
       'GET  /api/reputation/history/:wallet',
       'GET  /api/analytics/:wallet',
       'GET  /api/leaderboard',
+      'GET  /api/openapi.json',
+      'GET  /api/docs',
       'POST /api/reputation/update', // This will be implemented after Supabase integration
     ],
   });

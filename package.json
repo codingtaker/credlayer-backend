@@ -9,9 +9,7 @@
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "generate:openapi": "ts-node src/scripts/generateOpenApiSpec.ts",
-    "generate:client": "npm run generate:openapi && openapi --input ./openapi/openapi.json --output ./frontend-sdk --client fetch --useOptions --useUnionTypes"
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "@solana/web3.js": "^1.98.4",
@@ -29,7 +27,6 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "nodemon": "^3.1.14",
-    "openapi-typescript-codegen": "^0.30.0",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
   }

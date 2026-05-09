@@ -5,25 +5,21 @@ const swaggerOptions = {
     openapi: '3.0.3',
     info: {
       title: 'CredLayer API',
-      version: '0.1.0',
-      description:
-        'API de reputation decentralisee pour wallets Solana et agents IA.'
+      version: '0.2.0',
+      description: 'Reputation API for Solana wallets.'
     },
     servers: [
       {
         url: 'http://localhost:3001',
-        description: 'Local development server'
+        description: 'Local server'
       }
     ],
     tags: [
-      {
-        name: 'Health',
-        description: 'Health and service metadata'
-      },
-      {
-        name: 'Reputation',
-        description: 'Wallet reputation endpoints'
-      }
+      { name: 'Health', description: 'Service health and metadata' },
+      { name: 'Reputation', description: 'Wallet reputation endpoints' },
+      { name: 'Analytics', description: 'Wallet analytics endpoints' },
+      { name: 'Leaderboard', description: 'Ranking endpoints' },
+      { name: 'History', description: 'Reputation history endpoints' }
     ],
     paths: {
       '/health': {
@@ -32,20 +28,7 @@ const swaggerOptions = {
           summary: 'Health check endpoint',
           responses: {
             '200': {
-              description: 'Service is up',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    properties: {
-                      status: { type: 'string', example: 'ok' },
-                      project: { type: 'string', example: 'CredLayer' },
-                      version: { type: 'string', example: '0.1.0' }
-                    },
-                    required: ['status', 'project', 'version']
-                  }
-                }
-              }
+              description: 'Service is running'
             }
           }
         }
@@ -53,71 +36,79 @@ const swaggerOptions = {
       '/api/reputation/{wallet}': {
         get: {
           tags: ['Reputation'],
-          summary: 'Get reputation score for a Solana wallet',
+          summary: 'Get wallet reputation score',
           parameters: [
             {
               name: 'wallet',
               in: 'path',
               required: true,
-              description: 'Solana wallet address (base58)',
-              schema: {
-                type: 'string',
-                minLength: 32,
-                maxLength: 44,
-                example: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgHU'
-              }
+              schema: { type: 'string', minLength: 32, maxLength: 44 },
+              description: 'Solana wallet address'
             }
           ],
           responses: {
             '200': {
-              description: 'Wallet reputation payload',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    properties: {
-                      wallet: { type: 'string' },
-                      score: { type: 'number', nullable: true, example: 77 },
-                      risk: {
-                        type: 'string',
-                        nullable: true,
-                        example: 'low'
-                      },
-                      explanation: {
-                        type: 'string',
-                        nullable: true,
-                        example: 'Healthy activity over the last 90 days.'
-                      },
-                      signals: {
-                        nullable: true,
-                        oneOf: [{ type: 'array', items: { type: 'string' } }, { type: 'object' }]
-                      },
-                      message: {
-                        type: 'string',
-                        example: 'Scoring engine not yet connected - Day 1 setup'
-                      }
-                    },
-                    required: ['wallet', 'score', 'risk', 'explanation', 'signals', 'message']
-                  }
-                }
-              }
+              description: 'Reputation calculated successfully'
             },
             '400': {
-              description: 'Invalid wallet format',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    properties: {
-                      error: {
-                        type: 'string',
-                        example: 'Invalid Solana wallet address'
-                      }
-                    },
-                    required: ['error']
-                  }
-                }
-              }
+              description: 'Invalid wallet address'
+            },
+            '500': {
+              description: 'Failed to fetch wallet data'
+            }
+          }
+        }
+      },
+      '/api/analytics/{wallet}': {
+        get: {
+          tags: ['Analytics'],
+          summary: 'Get wallet analytics',
+          parameters: [
+            {
+              name: 'wallet',
+              in: 'path',
+              required: true,
+              schema: { type: 'string', minLength: 32, maxLength: 44 },
+              description: 'Solana wallet address'
+            }
+          ],
+          responses: {
+            '200': {
+              description: 'Analytics fetched successfully'
+            },
+            '500': {
+              description: 'Failed to fetch analytics'
+            }
+          }
+        }
+      },
+      '/api/reputation/history/{wallet}': {
+        get: {
+          tags: ['History'],
+          summary: 'Get wallet reputation history',
+          parameters: [
+            {
+              name: 'wallet',
+              in: 'path',
+              required: true,
+              schema: { type: 'string', minLength: 32, maxLength: 44 },
+              description: 'Solana wallet address'
+            }
+          ],
+          responses: {
+            '200': {
+              description: 'History fetched successfully'
+            }
+          }
+        }
+      },
+      '/api/leaderboard': {
+        get: {
+          tags: ['Leaderboard'],
+          summary: 'Get leaderboard',
+          responses: {
+            '200': {
+              description: 'Leaderboard fetched successfully'
             }
           }
         }
