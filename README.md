@@ -58,7 +58,6 @@ test
 ## Structure
 
 ```text
-.
 credlayer-backend/
 ├── src/
 │   ├── routes/
