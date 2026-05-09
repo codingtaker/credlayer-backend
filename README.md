@@ -33,7 +33,7 @@ install
 Create an environment file at the root of the project if needed, for example:
 
 ```env
-PORT=3000
+PORT=3001
 DATABASE_URL=
 JWT_SECRET=
 ```

@@ -1,37 +1,36 @@
 import { WalletSignals } from '../blockchain/solanaFetcher';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
+// Types 
 export interface ScoreResult {
   score: number;
   risk: 'high' | 'medium' | 'trusted' | 'highly_trusted';
   riskLabel: string;
   breakdown: {
-    walletAge: number;       // sur 20
-    activity: number;        // sur 20
-    defi: number;            // sur 20
-    behavior: number;        // sur 20
-    network: number;         // sur 20
+    walletAge: number;       // out of 20
+    activity: number;        // out of 20
+    defi: number;            // out of 20
+    behavior: number;        // out of 20
+    network: number;         // out of 20
   };
 }
 
-// ─── Fonction principale ──────────────────────────────────────────────────────
+// Main Function 
 
 export function calculateScore(signals: WalletSignals): ScoreResult {
 
-  // 1. Âge du wallet (max 20 points)
+  // 1. wallet age
   const walletAge = scoreWalletAge(signals.walletAgeMonths);
 
-  // 2. Activité (max 20 points)
+  // 2. Activity
   const activity = scoreActivity(signals.transactionCount);
 
-  // 3. Interactions DeFi (max 20 points)
+  // 3. DeFi interactions
   const defi = scoreDefi(signals.defiInteractions);
 
-  // 4. Comportement (max 20 points) — pénalité si suspect
+  // 4. Behavior — penalty if suspicious
   const behavior = scoreBehavior(signals.suspiciousActivity, signals.suspiciousReasons);
 
-  // 5. Réseau (max 20 points)
+  // 5. Network
   const network = scoreNetwork(signals.uniqueCounterparties);
 
   const total = walletAge + activity + defi + behavior + network;
@@ -45,7 +44,7 @@ export function calculateScore(signals: WalletSignals): ScoreResult {
   };
 }
 
-// ─── Critères de scoring ──────────────────────────────────────────────────────
+// Scoring Criteria
 
 function scoreWalletAge(months: number): number {
   if (months >= 24) return 20;
@@ -76,7 +75,7 @@ function scoreDefi(defiInteractions: number): number {
 
 function scoreBehavior(suspicious: boolean, reasons: string[]): number {
   if (!suspicious) return 20;
-  // Pénalité proportionnelle au nombre de signaux suspects
+  // Penalty proportional to the number of suspicious signals
   const penalty = reasons.length * 5;
   return Math.max(0, 20 - penalty);
 }
@@ -90,7 +89,7 @@ function scoreNetwork(counterparties: number): number {
   return 0;
 }
 
-// ─── Niveau de risque ─────────────────────────────────────────────────────────
+// Risk Level
 
 function getRiskLevel(score: number): ScoreResult['risk'] {
   if (score >= 81) return 'highly_trusted';
