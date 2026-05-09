@@ -59,12 +59,22 @@ test
 
 ```text
 .
+credlayer-backend/
 ├── src/
-├── config/
-├── routes/
-├── controllers/
-├── services/
-└── README.md
+│   ├── routes/
+│   │   └── reputation.ts      ← endpoints API
+│   ├── services/
+│   │   └── scoringService.ts  ← scoring logic 
+│   ├── blockchain/
+│   │   └── solanaFetcher.ts   ← Read Solana data
+│   ├── ai/
+│   │   └── groqExplainer.ts ← call groq API
+│   └── index.ts               ← server entry point
+├── .env                       ← secrect key 
+├── .env.example               ← public version
+├── .gitignore
+├── tsconfig.json
+└── package.json
 ```
 
 ## Contribution
