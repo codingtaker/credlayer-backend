@@ -1,0 +1,165 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CredLayer API",
+    "version": "0.1.0",
+    "description": "API de reputation decentralisee pour wallets Solana et agents IA."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "Local development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Health and service metadata"
+    },
+    {
+      "name": "Reputation",
+      "description": "Wallet reputation endpoints"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health check endpoint",
+        "responses": {
+          "200": {
+            "description": "Service is up",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "project": {
+                      "type": "string",
+                      "example": "CredLayer"
+                    },
+                    "version": {
+                      "type": "string",
+                      "example": "0.1.0"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "project",
+                    "version"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reputation/{wallet}": {
+      "get": {
+        "tags": [
+          "Reputation"
+        ],
+        "summary": "Get reputation score for a Solana wallet",
+        "parameters": [
+          {
+            "name": "wallet",
+            "in": "path",
+            "required": true,
+            "description": "Solana wallet address (base58)",
+            "schema": {
+              "type": "string",
+              "minLength": 32,
+              "maxLength": 44,
+              "example": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgHU"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Wallet reputation payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "wallet": {
+                      "type": "string"
+                    },
+                    "score": {
+                      "type": "number",
+                      "nullable": true,
+                      "example": 77
+                    },
+                    "risk": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": "low"
+                    },
+                    "explanation": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": "Healthy activity over the last 90 days."
+                    },
+                    "signals": {
+                      "nullable": true,
+                      "oneOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        {
+                          "type": "object"
+                        }
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Scoring engine not yet connected - Day 1 setup"
+                    }
+                  },
+                  "required": [
+                    "wallet",
+                    "score",
+                    "risk",
+                    "explanation",
+                    "signals",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid wallet format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid Solana wallet address"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
