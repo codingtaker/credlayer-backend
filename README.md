@@ -23,10 +23,8 @@ This repository contains the backend service for the Credlayer project. It expos
 ```bash
 git clone <url-du-repo>
 cd credlayer-backend
-install
+npm install
 ```
-
-> Replace the `install` command with the one appropriate for your stack if needed.
 
 ## Configuration
 
@@ -40,14 +38,40 @@ DATABASE_URL=
 ## Run
 
 ```bash
-run
+npm run dev
 ```
 
-Examples depending on the stack:
+Other useful commands:
 
-- `npm install`
-- `npm run dev`
+- `npm run build`
 - `npm start`
+
+## API Documentation (Swagger)
+
+Swagger is enabled for this backend.
+
+- Interactive UI: `GET /api/docs`
+- OpenAPI JSON spec: `GET /api/openapi.json`
+
+Local URLs:
+
+- `http://localhost:3001/api/docs`
+- `http://localhost:3001/api/openapi.json`
+
+Main documented endpoints:
+
+- `GET /health`
+- `GET /api/reputation/:wallet`
+- `GET /api/analytics/:wallet`
+- `GET /api/reputation/history/:wallet`
+- `GET /api/leaderboard`
+
+Swagger/OpenAPI dependencies used:
+
+- `swagger-ui-express`
+- `swagger-jsdoc`
+- `@types/swagger-ui-express`
+- `@types/swagger-jsdoc`
 
 ## Tests
 
