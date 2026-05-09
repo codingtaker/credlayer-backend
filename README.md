@@ -76,7 +76,6 @@ Swagger/OpenAPI dependencies used:
 ## Tests
 
 ```bash
-test
 npm test
 ```
 
